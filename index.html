@@ -69,10 +69,16 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       font-size: 1rem;
       line-height: 1.6;
+      display: none;
     }
 
-    .hidden {
-      display: none;
+    .result-box.show {
+      display: block;
+    }
+
+    .loading {
+      color: #555;
+      font-style: italic;
     }
   </style>
 </head>
@@ -85,31 +91,31 @@
     </div>
   </div>
 
-  <div class="result-box hidden" id="resultBox"></div>
+  <div class="result-box" id="resultBox"></div>
 
   <script>
     function cekStatus() {
       const id = document.getElementById("idInput").value.trim();
       const resultBox = document.getElementById("resultBox");
 
+      resultBox.classList.add("show");
+
       if (!id) {
         resultBox.innerHTML = "⚠️ Mohon masukkan ID terlebih dahulu.";
-        resultBox.classList.remove("hidden");
         return;
       }
+
+      resultBox.innerHTML = "<span class='loading'>⏳ Sedang memproses, mohon tunggu...</span>";
 
       fetch(`https://script.google.com/macros/s/AKfycbyubXsiEkO8e4my9RkSr1WM22M6jqK5PimSkeXXJPM9KxBKpoJTvVFkuTSZsa9peJH1/exec?id=${id}`)
         .then((res) => res.text())
         .then((data) => {
           resultBox.innerText = data;
-          resultBox.classList.remove("hidden");
         })
         .catch((err) => {
-          resultBox.innerText = "❌ Terjadi kesalahan. Silakan coba lagi.";
-          resultBox.classList.remove("hidden");
+          resultBox.innerHTML = "❌ Terjadi kesalahan. Silakan coba lagi.";
         });
     }
   </script>
 </body>
 </html>
-
