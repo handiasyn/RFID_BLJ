@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Realisasi RFID BLJ 2025</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f3f4f6;
+    }
+
+    .header {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.4)),
+                  url('https://i.postimg.cc/vTgNXFjS/BACKground-JT.jpg') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+      border-radius: 0 0 40px 40px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .search-box input {
+      width: 300px;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 50px 0 0 50px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .search-box button {
+      padding: 15px 25px;
+      background-color: #00b894;
+      color: white;
+      border: none;
+      border-radius: 0 50px 50px 0;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .search-box button:hover {
+      background-color: #019874;
+    }
+
+    .result-box {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>REALISASI RFID BLJ 2025</h1>
+    <div class="search-box">
+      <input type="number" id="idInput" placeholder="Masukkan ID kamu..." />
+      <button onclick="cekStatus()">Check</button>
+    </div>
+  </div>
+
+  <div class="result-box hidden" id="resultBox"></div>
+
+  <script>
+    function cekStatus() {
+      const id = document.getElementById("idInput").value.trim();
+      const resultBox = document.getElementById("resultBox");
+
+      if (!id) {
+        resultBox.innerHTML = "⚠️ Mohon masukkan ID terlebih dahulu.";
+        resultBox.classList.remove("hidden");
+        return;
+      }
+
+      fetch(`https://script.google.com/macros/s/AKfycbxYSfatbeOoBdf_KPXDwuNa15rnatB0MAT1IUs0jDRYTA2w8YZnm6Xc3EE1uPHnxm32/exec?id=${id}`)
+        .then((res) => res.text())
+        .then((data) => {
+          resultBox.innerText = data;
+          resultBox.classList.remove("hidden");
+        })
+        .catch((err) => {
+          resultBox.innerText = "❌ Terjadi kesalahan. Silakan coba lagi.";
+          resultBox.classList.remove("hidden");
+        });
+    }
+  </script>
+</body>
+</html>
