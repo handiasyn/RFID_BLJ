@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cek Realisasi RFID</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
 
+  <h2>Cek Status Realisasi ID</h2>
+  <input type="text" id="idInput" placeholder="Masukkan ID Anda">
+  <button onclick="cekID()">Cek</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function cekID() {
+      const id = document.getElementById("idInput").value.trim();
+      const resultEl = document.getElementById("result");
+
+      if (!id) {
+        resultEl.textContent = "❌ Silakan masukkan ID terlebih dahulu.";
+        return;
+      }
+
+      resultEl.textContent = "🔍 Sedang memproses...";
+
+      try {
+        const response = await fetch(`https://script.google.com/macros/s/AKfycby7G4DsyaqeWZ0OMGUUQdOG7wzj4Jq14BECWUS2t9OXalClqy8pOWoIepBrse2OXSTk/exec?ID=${id}`);
+        const text = await response.text();
+        resultEl.textContent = text;
+      } catch (error) {
+        resultEl.textContent = "⚠️ Terjadi kesalahan. Silakan coba lagi.";
+      }
+    }
+  </script>
+
+</body>
+</html>
