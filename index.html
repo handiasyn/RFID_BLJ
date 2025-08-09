@@ -108,7 +108,7 @@
       resultBox.innerHTML = "<span class='loading'>⏳ Sedang memproses, mohon tunggu...</span>";
 
       try {
-        const response = await fetch(`https://script.google.com/macros/s/AKfycbyubXsiEkO8e4my9RkSr1WM22M6jqK5PimSkeXXJPM9KxBKpoJTvVFkuTSZsa9peJH1/exec?ID=${id}`);
+        const response = await fetch(`https://script.google.com/macros/s/AKfycbzpseibfb-mPMHmt8sxxAKxJ_ovHxovYrVyATO6SX18lPPXfuZSQ3YAzLC8HPLLqBTI/exec?ID=${id}`);
         const text = await response.text();
         resultBox.textContent = text;
       } catch (error) {
