@@ -5,116 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Realisasi RFID BLJ 2025</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      box-sizing: border-box;
-    }
-
-    body {
-      background-color: #f3f4f6;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+    body { background:#f3f4f6; }
 
     .header {
       background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.4)),
                   url('https://i.postimg.cc/vTgNXFjS/BACKground-JT.jpg') center/cover no-repeat;
-      color: white;
-      text-align: center;
-      padding: 80px 20px;
+      color:#fff; text-align:center; padding:80px 20px;
     }
+    .header h1 { font-size:2.5rem; margin-bottom:30px; }
 
-    .header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
+    .search-box { display:flex; justify-content:center; gap:0; }
+    .search-box input{
+      width:320px; padding:15px 20px; border:none; border-radius:50px 0 0 50px;
+      font-size:1rem; outline:none;
     }
-
-    .search-box {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
+    .search-box button{
+      padding:15px 25px; background:#00b894; color:#fff; border:none;
+      border-radius:0 50px 50px 0; font-size:1rem; cursor:pointer;
     }
+    .search-box button:hover{ background:#019874; }
 
-    .search-box input {
-      width: 300px;
-      padding: 15px 20px;
-      border: none;
-      border-radius: 50px 0 0 50px;
-      font-size: 1rem;
-      outline: none;
-    }
-
-    .search-box button {
-      padding: 15px 25px;
-      background-color: #00b894;
-      color: white;
-      border: none;
-      border-radius: 0 50px 50px 0;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .search-box button:hover {
-      background-color: #019874;
-    }
-
-    .result-box {
-      max-width: 600px;
-      margin: 40px auto;
-      background-color: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    /* Area hasil tanpa card/kotak */
+    #result {
+      max-width: 900px;
+      margin: 24px auto 60px;
+      padding: 0 20px;
+      color: #2c3e50;
       font-size: 1rem;
       line-height: 1.6;
-      display: none;
-      white-space: pre-line; /* supaya \n dari Apps Script muncul sebagai baris baru */
+      white-space: pre-line;  /* penting: agar \n dari Apps Script jadi baris baru */
     }
 
-    .result-box.show {
-      display: block;
-    }
-
-    .loading {
-      color: #555;
-      font-style: italic;
-    }
+    /* Pesan loading */
+    .loading { color:#555; font-style:italic; }
   </style>
 </head>
 <body>
   <div class="header">
     <h1>REALISASI RFID BLJ 2025</h1>
     <div class="search-box">
-      <input type="text" id="idInput" placeholder="Masukkan ID kamu..." />
+      <input type="text" id="idInput" placeholder="Masukkan ID kamu..." autofocus />
       <button onclick="cekStatus()">Check</button>
     </div>
   </div>
 
-  <div class="result-box" id="resultBox"></div>
+  <div id="result"></div>
 
   <script>
     async function cekStatus() {
-      const id = document.getElementById("idInput").value.trim();
-      const resultBox = document.getElementById("resultBox");
-
-      resultBox.classList.add("show");
+      const id = document.getElementById('idInput').value.trim();
+      const resultEl = document.getElementById('result');
 
       if (!id) {
-        resultBox.textContent = "⚠️ Mohon masukkan ID terlebih dahulu.";
+        resultEl.textContent = "❌ Silakan masukkan ID terlebih dahulu.";
         return;
       }
 
-      resultBox.textContent = "⏳ Sedang memproses, mohon tunggu...";
+      resultEl.innerHTML = "<span class='loading'>🔍 Sedang memproses...</span>";
 
       try {
-        const response = await fetch(`https://script.google.com/macros/s/AKfycbyubXsiEkO8e4my9RkSr1WM22M6jqK5PimSkeXXJPM9KxBKpoJTvVFkuTSZsa9peJH1/exec?ID=${encodeURIComponent(id)}`);
-        const text = await response.text();
-        resultBox.textContent = text; // akan otomatis pecah baris karena CSS white-space: pre-line
-      } catch (error) {
-        resultBox.textContent = "❌ Terjadi kesalahan. Silakan coba lagi.";
+        const res = await fetch(`https://script.google.com/macros/s/AKfycbyubXsiEkO8e4my9RkSr1WM22M6jqK5PimSkeXXJPM9KxBKpoJTvVFkuTSZsa9peJH1/exec?ID=${encodeURIComponent(id)}`);
+        const text = await res.text();
+        // Tampilkan persis tekstual dari Apps Script; \n akan jadi baris baru karena CSS pre-line
+        resultEl.textContent = text;
+      } catch (e) {
+        resultEl.textContent = "⚠️ Terjadi kesalahan. Silakan coba lagi.";
       }
     }
+
+    // Enter untuk submit
+    document.getElementById('idInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') cekStatus();
+    });
   </script>
 </body>
 </html>
