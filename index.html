@@ -34,11 +34,34 @@
       color: #2c3e50;
       font-size: 1rem;
       line-height: 1.6;
-      white-space: pre-line;  /* penting: agar \n dari Apps Script jadi baris baru */
+      white-space: pre-line;  /* agar \n dari Apps Script jadi baris baru */
     }
 
     /* Pesan loading */
     .loading { color:#555; font-style:italic; }
+
+    /* Bagian panduan */
+    .panduan {
+      text-align:center; 
+      margin:100px 20px 60px; /* lebih diturunkan dengan margin-top 100px */
+    }
+    .panduan h2 {
+      margin-bottom:20px; 
+      color:#2c3e50; 
+      font-weight:600;
+    }
+    .panduan a {
+      display:inline-block; 
+      font-size:3.5rem; 
+      text-decoration:none; 
+      color:#2c3e50;
+    }
+    .panduan p {
+      margin-top:15px; 
+      font-size:1.1rem;  /* diperbesar */
+      color:#000;        /* jadi hitam pekat */
+      font-weight:500;
+    }
   </style>
 </head>
 <body>
@@ -51,6 +74,13 @@
   </div>
 
   <div id="result"></div>
+
+  <!-- Bagian panduan ID Card -->
+  <div class="panduan">
+    <h2>Cara Mengajukan ID Card Via Staff Portal (LGES)</h2>
+    <a href="Tutorial Pengajuan ID Card Baru (1).pdf" target="_blank">📄</a>
+    <p>Mohon diberikan keterangan, Keperluan Pembuatan RFID BLJ</p>
+  </div>
 
   <script>
     async function cekStatus() {
@@ -67,7 +97,7 @@
       try {
         const res = await fetch(`https://script.google.com/macros/s/AKfycbyubXsiEkO8e4my9RkSr1WM22M6jqK5PimSkeXXJPM9KxBKpoJTvVFkuTSZsa9peJH1/exec?ID=${encodeURIComponent(id)}`);
         const text = await res.text();
-        // Tampilkan persis tekstual dari Apps Script; \n akan jadi baris baru karena CSS pre-line
+        // tampilkan teks dari Apps Script
         resultEl.textContent = text;
       } catch (e) {
         resultEl.textContent = "⚠️ Terjadi kesalahan. Silakan coba lagi.";
